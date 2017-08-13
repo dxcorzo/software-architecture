@@ -4,7 +4,7 @@ CREATE TABLE Departamentos
 (
   Id serial not null primary key,
   Nombre varchar not null,
-  Estado bit not null
+  Estado boolean not null default true
 );
 
 CREATE TABLE Ciudades
@@ -12,7 +12,7 @@ CREATE TABLE Ciudades
   Id serial not null primary key,
   Nombre varchar not null,
   IdDepartamento int not null references Departamentos(Id),
-  Estado bit not null
+  Estado boolean not null default true
 );
 
 CREATE TABLE Humedades
