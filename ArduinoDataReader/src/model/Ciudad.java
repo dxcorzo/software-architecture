@@ -87,5 +87,11 @@ public class Ciudad implements Serializable {
 
 		return humedad;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return getNombre();
+	}
 
 }

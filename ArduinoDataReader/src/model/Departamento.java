@@ -75,4 +75,10 @@ public class Departamento implements Serializable {
 		return ciudad;
 	}
 
+	@Override
+	public String toString()
+	{
+		return getNombre();
+	}
+	
 }
