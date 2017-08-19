@@ -16,12 +16,16 @@ public class Humedad implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
+	@Basic(optional = true)
 	private Boolean estado;
 
+	@Basic(optional = true)
 	private Timestamp fecha;
 
+	@Basic(optional = false)
 	private String valor;
 
 	//bi-directional many-to-one association to Ciudade

@@ -10,6 +10,8 @@ public class Utils
 		{
 			combo.addItem(item);
 		}
+		
+		combo.setSelectedIndex(-1);
 	}
 
 }

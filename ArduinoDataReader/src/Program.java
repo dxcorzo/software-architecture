@@ -42,97 +42,86 @@ public class Program implements SerialPortEventListener
 	
 	/** Default bits per second for COM port. */
 	private static final int DATA_RATE = 9600;
+	
+	InfoHumedad dataDb;
 
 	JFrame frmVisorDeHumedad;
 	JLabel labelHumedad;
 	JLabel lblPuerto;
+	JButton btnConectar;
+	JPanel panel;
+	JComboBox<model.Ciudad> comboBoxCiudad;
 
 	public void initialize()
 	{
+		dataDb = new InfoHumedad();
+		
 		frmVisorDeHumedad = new JFrame();
 		frmVisorDeHumedad.setResizable(false);
 		frmVisorDeHumedad.setTitle("Visor de Humedad");
-		frmVisorDeHumedad.setBounds(100, 100, 411, 206);
+		frmVisorDeHumedad.setBounds(100, 100, 489, 179);
 		frmVisorDeHumedad.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmVisorDeHumedad.getContentPane().setLayout(null);
 
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 		panel.setVisible(false);
-		panel.setBounds(10, 11, 385, 106);
+		panel.setBounds(10, 11, 463, 106);
 		frmVisorDeHumedad.getContentPane().add(panel);
 		panel.setLayout(null);
 
-		labelHumedad = new JLabel("22");
-		labelHumedad.setBounds(257, 0, 128, 73);
+		labelHumedad = new JLabel("...");
+		labelHumedad.setHorizontalAlignment(SwingConstants.CENTER);
+		labelHumedad.setBounds(301, 31, 128, 66);
 		panel.add(labelHumedad);
 		labelHumedad.setForeground(new Color(0, 0, 128));
-		labelHumedad.setFont(new Font("Tahoma", Font.BOLD, 54));
+		labelHumedad.setFont(new Font("Tahoma", Font.BOLD, 44));
 
 		JLabel lblDepartamento = new JLabel("Departamento");
-		lblDepartamento.setBounds(0, 14, 75, 14);
+		lblDepartamento.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblDepartamento.setBounds(10, 34, 89, 14);
 		panel.add(lblDepartamento);
 
 		JComboBox<model.Departamento> comboBoxDepartamento = new JComboBox<model.Departamento>();
-		comboBoxDepartamento.setBounds(85, 11, 162, 20);
+		comboBoxDepartamento.setBounds(109, 31, 162, 20);
 		panel.add(comboBoxDepartamento);
 		
 		JLabel lblCiudad = new JLabel("Ciudad");
-		lblCiudad.setBounds(37, 49, 46, 14);
+		lblCiudad.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblCiudad.setBounds(37, 65, 62, 14);
 		panel.add(lblCiudad);
 
-		JComboBox<model.Ciudad> comboBoxCiudad = new JComboBox<model.Ciudad>();
-		comboBoxCiudad.setBounds(85, 46, 162, 20);
+		comboBoxCiudad = new JComboBox<model.Ciudad>();
+		comboBoxCiudad.setBounds(109, 62, 162, 20);
 		panel.add(comboBoxCiudad);
 
-		JButton btnConectar = new JButton("Conectar");
+		btnConectar = new JButton("Conectar");
 		btnConectar.setAlignmentX(Component.CENTER_ALIGNMENT);
-		btnConectar.setBounds(139, 58, 89, 23);
+		btnConectar.setAlignmentY(Component.CENTER_ALIGNMENT);
+		btnConectar.setBounds(169, 58, 89, 23);
 
 		btnConectar.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				btnConectar.setVisible(false);
-				panel.setVisible(true);
+				InicializarComunicacionArduino();
 			}
 		});
-
-		JButton btnDesconectar = new JButton("Desconectar");
-
-		btnDesconectar.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				btnConectar.setVisible(true);
-				panel.setVisible(false);
-			}
-		});
-
-		btnDesconectar.setBackground(Color.ORANGE);
-		btnDesconectar.setBounds(131, 83, 116, 23);
-		btnDesconectar.setContentAreaFilled(false);
-		btnDesconectar.setOpaque(true);
-
-		panel.add(btnDesconectar);
 
 		frmVisorDeHumedad.getContentPane().add(btnConectar);
 		
-		JLabel lblNewLabel = new JLabel("Puerto:");
-		lblNewLabel.setBounds(266, 152, 46, 14);
-		frmVisorDeHumedad.getContentPane().add(lblNewLabel);
-		
 		lblPuerto = new JLabel("SIN CONEXION");
 		lblPuerto.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblPuerto.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPuerto.setBounds(306, 152, 89, 14);
+		lblPuerto.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblPuerto.setBounds(203, 128, 270, 14);
 		frmVisorDeHumedad.getContentPane().add(lblPuerto);
 
-		InfoHumedad dataDb = new InfoHumedad();
-		
 		Utils.CargarCombo(comboBoxDepartamento, dataDb.ConsultarDepartamentos());
 		comboBoxDepartamento.addItemListener(new ItemChangeListener(comboBoxCiudad));
 		
-		InicializarComunicacionArduino();
+		JLabel lblNewLabel_1 = new JLabel("Porcentaje de humedad");
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_1.setBounds(281, 11, 172, 14);
+		panel.add(lblNewLabel_1);
 	}
 
 	private void InicializarComunicacionArduino()
@@ -149,7 +138,7 @@ public class Program implements SerialPortEventListener
 			
 			if (currPortId.getName().equals(port_name))
 			{
-				lblPuerto.setText(currPortId.getName());
+				lblPuerto.setText("Arduino UNO en " + currPortId.getName());
 				portId = currPortId;
 				break;
 			}
@@ -157,8 +146,16 @@ public class Program implements SerialPortEventListener
 
 		if (portId == null)
 		{
-			lblPuerto.setText("Sin conexión");
+			lblPuerto.setText("Conecte el arduino");
+			btnConectar.setVisible(true);
+			panel.setVisible(false);
+			
 			return;
+		}
+		else
+		{
+			btnConectar.setVisible(false);
+			panel.setVisible(true);
 		}
 
 		try
@@ -206,9 +203,17 @@ public class Program implements SerialPortEventListener
 		{
 			try
 			{
-				String inputLine = input.readLine();
-				System.out.println(inputLine);
-				labelHumedad.setText(inputLine);
+				String humedadAmbiente = input.readLine();
+				
+				model.Ciudad ciudadSeleccionada = (model.Ciudad)comboBoxCiudad.getSelectedItem();
+				
+				if(ciudadSeleccionada != null)
+				{
+					dataDb.RegistrarHumedad(humedadAmbiente, ciudadSeleccionada);
+				}
+				
+				System.out.println(humedadAmbiente);
+				labelHumedad.setText(humedadAmbiente + "%");
 			}
 			catch (Exception e)
 			{

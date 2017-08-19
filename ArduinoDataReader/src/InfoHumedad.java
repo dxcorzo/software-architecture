@@ -1,3 +1,4 @@
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -6,38 +7,41 @@ import javax.persistence.Persistence;
 
 import model.Humedad;
 
-public class InfoHumedad 
+public class InfoHumedad
 {
 	EntityManager entityManager = null;
 	EntityManagerFactory emf = Persistence.createEntityManagerFactory("ArduinoDataReader");
 
+	public InfoHumedad()
+	{
+		entityManager = emf.createEntityManager();
+	}
+
 	public List<model.Departamento> ConsultarDepartamentos()
 	{
-		entityManager = emf.createEntityManager();
-		entityManager.getEntityManagerFactory().getCache().evictAll();
+		List<model.Departamento> retorno = entityManager.createNamedQuery("Departamento.findAll", model.Departamento.class).getResultList();
+		//entityManager.close();
+		
+		return retorno;
+	}
 
-		return entityManager.createNamedQuery("Departamento.findAll", model.Departamento.class).getResultList();		
-	}
-	
-	public List<model.Ciudad> ConsultarCiudades(int IdDepartamento)
+	public boolean RegistrarHumedad(String valor, model.Ciudad ciudad)
 	{
-		return null;		
-	}
-	
-	public boolean Registro(String valor)
-	{
-		entityManager = emf.createEntityManager();
 		entityManager.getEntityManagerFactory().getCache().evictAll();
 		entityManager.getTransaction().begin();
-		
+
 		Humedad humedadRegistrar = new Humedad();
+
+		humedadRegistrar.setEstado(true);
 		humedadRegistrar.setValor(valor);
-		
+		humedadRegistrar.setCiudad(ciudad);
+		humedadRegistrar.setFecha(new Timestamp(System.currentTimeMillis()));
+
 		entityManager.persist(humedadRegistrar);
 		entityManager.getTransaction().commit();
-		
-		entityManager.close();
-		
+
+		//entityManager.close();
+
 		return true;
-	}	
+	}
 }
