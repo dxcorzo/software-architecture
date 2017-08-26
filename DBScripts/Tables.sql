@@ -19,6 +19,7 @@ CREATE TABLE Humedades
 (
   Id serial not null primary key,
   Valor varchar not null,
+  Temperatura varchar not null,
   Fecha timestamp not null default CURRENT_TIMESTAMP,
   IdCiudad int not null references Ciudades(Id),
   Estado boolean not null default true
