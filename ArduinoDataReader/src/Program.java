@@ -203,13 +203,15 @@ public class Program implements SerialPortEventListener
 		{
 			try
 			{
-				String humedadAmbiente = input.readLine();
+				String[] dataSensor = input.readLine().split(",");
+				String humedadAmbiente =dataSensor[0];
+				String temperaturaAmbiente = dataSensor[1];
 				
 				model.Ciudad ciudadSeleccionada = (model.Ciudad)comboBoxCiudad.getSelectedItem();
 				
 				if(ciudadSeleccionada != null)
 				{
-					dataDb.RegistrarHumedad(humedadAmbiente, ciudadSeleccionada);
+					dataDb.RegistrarHumedad(humedadAmbiente, temperaturaAmbiente, ciudadSeleccionada);
 				}
 				
 				System.out.println(humedadAmbiente);

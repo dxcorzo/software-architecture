@@ -25,7 +25,7 @@ public class InfoHumedad
 		return retorno;
 	}
 
-	public boolean RegistrarHumedad(String valor, model.Ciudad ciudad)
+	public boolean RegistrarHumedad(String humedad, String temperatura, model.Ciudad ciudad)
 	{
 		entityManager.getEntityManagerFactory().getCache().evictAll();
 		entityManager.getTransaction().begin();
@@ -33,7 +33,8 @@ public class InfoHumedad
 		Humedad humedadRegistrar = new Humedad();
 
 		humedadRegistrar.setEstado(true);
-		humedadRegistrar.setValor(valor);
+		humedadRegistrar.setValor(humedad);
+		humedadRegistrar.setTemperatura(temperatura);
 		humedadRegistrar.setCiudad(ciudad);
 		humedadRegistrar.setFecha(new Timestamp(System.currentTimeMillis()));
 

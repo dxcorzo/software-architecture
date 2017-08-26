@@ -27,6 +27,9 @@ public class Humedad implements Serializable {
 
 	@Basic(optional = false)
 	private String valor;
+	
+	@Basic(optional = false)
+	private String temperatura;
 
 	//bi-directional many-to-one association to Ciudade
 	@ManyToOne
@@ -67,6 +70,15 @@ public class Humedad implements Serializable {
 	public void setValor(String valor) {
 		this.valor = valor;
 	}
+
+	public void setTemperatura(String temperatura) {
+		this.temperatura = temperatura;
+	}
+	
+	public String getTemperatura() {
+		return this.temperatura;
+	}
+	
 
 	public Ciudad getCiudad() {
 		return this.ciudad;
