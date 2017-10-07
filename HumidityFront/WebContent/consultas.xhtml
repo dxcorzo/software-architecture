@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta charset="utf-8" />
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<link rel="stylesheet"
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" />
+	<link href="site.css" rel="stylesheet" />
+</h:head>
+<h:body>
+	<div class="container">
+		<div class="header clearfix">
+			<nav>
+				<ul class="nav nav-pills float-right">
+					<li class="nav-item"><a class="nav-link" href="Index.xhtml">Home</a></li>
+					<li class="nav-item"><a class="nav-link active" href="#">Consultas
+							<span class="sr-only">(current)</span>
+					</a></li>
+					<li class="nav-item"><a class="nav-link" href="#">Estadísticas</a></li>
+				</ul>
+			</nav>
+			<h3 class="text-muted">Software Architecture</h3>
+		</div>
+
+		<h3>
+			Consultas <small class="text-muted">requerimiento segundo
+				corte</small>
+		</h3>
+
+<div class="alert alert-primary" role="alert">
+  Operando con la ApiKey <em>#{consultasBean.configuracion.apiKey}</em>
+</div>
+
+		<h:form>
+			<p>Seleccione una o varias ciudades</p>
+			<p:selectManyCheckbox id="grid"
+				value="#{consultasBean.ciudadesSeleccionadas}" layout="grid"
+				columns="3">
+				<f:selectItems value="#{consultasBean.ciudades}" var="city"
+					itemLabel="#{city.nombre} (#{city.departamento.nombre})"
+					itemValue="#{city.id}" />
+			</p:selectManyCheckbox>
+
+
+			<p>
+				<h:commandButton action="#{consultasBean.consultarHumedades()}"
+					value="Consultar" styleClass="btn btn-primary" />
+			</p>
+
+
+
+			<hr />
+
+			<p:dataTable var="car" value="#{consultasBean.humedades}">
+
+				<p:column headerText="Ciudad">
+					<h:outputText value="#{car.ciudad.nombre}" />
+				</p:column>
+
+				<p:column headerText="Fecha">
+					<h:outputText value="#{car.fecha}" >
+					<f:convertDateTime pattern="yyyy-MM-dd / hh:mm" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Temp" width="80">
+					<h:outputText value="#{car.temperatura}°C" />
+				</p:column>
+				
+				<p:column headerText="Humedad" width="120">
+					<h:outputText value="#{car.valor}%" />
+				</p:column>
+				
+				<p:column headerText="Fuente" width="100">
+					<h:outputText value="#{car.origen}" styleClass="badge badge-primary" />
+				</p:column>
+
+			</p:dataTable>
+
+
+
+		</h:form>
+
+		<footer class="footer">
+			<p>Done by Daniel Corzo</p>
+		</footer>
+
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+</h:body>
+</html>

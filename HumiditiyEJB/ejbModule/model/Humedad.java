@@ -4,14 +4,16 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
-
 /**
  * The persistent class for the humedades database table.
  * 
  */
 @Entity
-@Table(name="humedades")
-@NamedQuery(name="Humedad.findAll", query="SELECT h FROM Humedad h")
+@Table(name = "humedades")
+@NamedQueries({ 
+	@NamedQuery(name = "Humedad.findAll", query = "SELECT h FROM Humedad h"),
+    @NamedQuery(name = "Humedad.findAllFilter", query = "SELECT h FROM Humedad h where h.ciudad.id = :ciudad") 
+})
 public class Humedad implements Serializable
 {
 	private static final long serialVersionUID = 1L;

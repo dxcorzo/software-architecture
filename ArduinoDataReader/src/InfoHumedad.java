@@ -32,6 +32,7 @@ public class InfoHumedad
 
 		Humedad humedadRegistrar = new Humedad();
 
+		humedadRegistrar.setOrigen("ARDUINO");
 		humedadRegistrar.setEstado(true);
 		humedadRegistrar.setValor(humedad);
 		humedadRegistrar.setTemperatura(temperatura);
