@@ -2,6 +2,7 @@ package controller;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.ejb.LocalBean;
@@ -28,7 +29,7 @@ public class IndexController implements IndexControllerRemote
 {
 	@PersistenceContext
 	EntityManager entityManager;
-	
+
 	private final int DEFAULT_API_KEY_ID = 1;
 
 	/**
@@ -77,6 +78,12 @@ public class IndexController implements IndexControllerRemote
 	}
 
 	@Override
+	public List<HumedadDto> consultarHumedades(String ciudadSeleccionada)
+	{
+		return consultarHumedades(new ArrayList<String>(Arrays.asList(ciudadSeleccionada)));
+	}
+
+	@Override
 	public List<HumedadDto> consultarHumedades(List<String> ciudadesSeleccionadas)
 	{
 		List<HumedadDto> retorno = new ArrayList<HumedadDto>();
@@ -117,6 +124,43 @@ public class IndexController implements IndexControllerRemote
 	}
 
 	@Override
+	public List<HumedadDto> consultarHumedades()
+	{
+		List<HumedadDto> retorno = new ArrayList<HumedadDto>();
+
+		List<Humedad> humedades = entityManager.createNamedQuery("Humedad.findAll", model.Humedad.class)
+		        .getResultList();
+
+		for (Humedad item : humedades)
+		{
+			HumedadDto humedad = new HumedadDto();
+			CiudadDto ciudadDto = new CiudadDto();
+			DepartamentoDto depto = new DepartamentoDto();
+
+			humedad.setId(item.getId());
+			humedad.setFecha(item.getFecha());
+			humedad.setEstado(item.getEstado());
+			humedad.setTemperatura(item.getTemperatura());
+			humedad.setValor(item.getValor());
+			humedad.setOrigen(item.getOrigen());
+
+			depto.setId(item.getCiudad().getDepartamento().getId());
+			depto.setNombre(item.getCiudad().getDepartamento().getNombre());
+
+			ciudadDto.setNombre(item.getCiudad().getNombre());
+			ciudadDto.setEstado(item.getCiudad().getEstado());
+			ciudadDto.setId(item.getCiudad().getId());
+			ciudadDto.setDepartamento(depto);
+
+			humedad.setCiudad(ciudadDto);
+
+			retorno.add(humedad);
+		}
+
+		return retorno;
+	}
+
+	@Override
 	public void guardarInfoClima(Integer humedad, Double temperatura, CiudadDto ciudad)
 	{
 		Humedad humedadRegistrar = new Humedad();
@@ -138,7 +182,7 @@ public class IndexController implements IndexControllerRemote
 	{
 		Configuracion config = entityManager.find(Configuracion.class, DEFAULT_API_KEY_ID);
 		ConfiguracionDto retorno = new ConfiguracionDto();
-		
+
 		retorno.setId(config.getId());
 		retorno.setEstado(config.getEstado());
 		retorno.setApiKey(config.getApiKey());

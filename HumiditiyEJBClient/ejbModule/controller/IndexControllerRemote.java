@@ -19,6 +19,10 @@ public interface IndexControllerRemote
 	public List<CiudadDto> consultarTodasLasCiudades();
 	
 	public List<HumedadDto> consultarHumedades(List<String> ciudadesSeleccionadas);
+	
+	public List<HumedadDto> consultarHumedades(String ciudadSeleccionada);
+	
+	public List<HumedadDto> consultarHumedades();
 
 	public void guardarInfoClima(Integer humedad, Double temperatura, CiudadDto ciudad);
 	

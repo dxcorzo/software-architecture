@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta charset="utf-8" />
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<link rel="stylesheet"
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" />
+	<link href="site.css" rel="stylesheet" />
+
+	<h:outputScript name="charts/charts.js" library="primefaces" />
+	<h:outputStylesheet name="charts/charts.css" library="primefaces" />
+
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/plugins/jqplot.trendline.min.js"></script>
+
+</h:head>
+<h:body>
+	<div class="container">
+		<div class="header clearfix">
+			<nav>
+				<ul class="nav nav-pills float-right">
+					<li class="nav-item"><a class="nav-link" href="Index.xhtml">Home</a></li>
+					<li class="nav-item"><a class="nav-link" href="consultas.xhtml">Consultas</a></li>
+					<li class="nav-item"><a class="nav-link active" href="#">Estadísticas
+							<span class="sr-only">(current)</span>
+					</a></li>
+					<li class="nav-item"><a class="nav-link" href="pearson.xhtml">Bonus</a></li>
+				</ul>
+			</nav>
+			<h3 class="text-muted">Software Architecture</h3>
+		</div>
+
+		<h3>
+			Estadísticas <small class="text-muted">requerimiento tercer
+				corte</small>
+		</h3>
+
+		<h:form>
+			<p>Seleccione una o varias ciudades</p>
+			<p:selectOneRadio id="grid" value="#{estadisticasBean.ciudadMarcada}"
+				layout="grid" columns="3">
+				<f:selectItems value="#{estadisticasBean.ciudades}" var="city"
+					itemLabel="#{city.nombre} (#{city.departamento.nombre})"
+					itemValue="#{city.id}" />
+			</p:selectOneRadio>
+
+			<div class="btn-group" role="group">
+
+				<h:commandButton action="#{estadisticasBean.CargarGraficas()}"
+					value="Estadistica dia/mes/tendencia" styleClass="btn btn-primary" />
+					
+			</div>
+
+			<hr />
+			<p:chart type="line" id="dayMonthChart"
+				model="#{estadisticasBean.dateModel}" style="height:400px;" />
+
+			<hr />
+
+			<p:chart type="line" id="trendChart"
+				model="#{estadisticasBean.trendModel}" style="height:400px;" />
+
+
+		</h:form>
+
+
+		<footer class="footer">
+			<p>Done by Daniel Corzo</p>
+		</footer>
+
+	</div>
+
+
+	<script>
+
+function trendLineExtender()
+{
+	this.cfg.seriesDefaults.trendline = { show: true, color: "#FFAA00" };
+}
+
+</script><script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+</h:body>
+</html>
